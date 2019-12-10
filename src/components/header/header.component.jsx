@@ -6,8 +6,6 @@ import './header.styles.scss';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 
 
-
-
 const Header = () => (
     <div className="header">
     

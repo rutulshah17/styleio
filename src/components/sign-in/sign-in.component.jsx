@@ -2,6 +2,8 @@ import React from 'react';
 
 import './sign-in.styles.scss';
 
+import FormInput from '../form-input/form-input.component';
+
 class SignIn extends React.Component {
 	constructor(props) {
 		super(props);
@@ -24,22 +26,40 @@ class SignIn extends React.Component {
 	};
 
 	render() {
+
+		//* passing label, name, type, value, handleChange and required as props to form-input component 
+		//* which will be retrieved as ...otherProps in form-input component
+		//* since we have to define each property for form-input (such as label, type, value .....)
+		//* we cannot use ...otherProps in this component, but can be retrieved as ...otherProps on the other end
+
 		return(
 			<div className='sign-in'>
 				<h2>I already have an account</h2>
 				<span> sign in with your email and password </span>
 			
-				<form>
-					<input name='email' type='email' value={this.state.email} onChange={this.handleChange} required/>
-					<label> Email </label>
-				
-					<input name='password' type='password' value={this.state.password} onChange={this.handleChange} required/>
-					<label> Password </label>
+				<form onSubmit={this.handleSubmit}>
+
+					<FormInput 
+						label='Email' 
+						name='email' 
+						type='email' 
+						value={this.state.email} 
+						handleChange={this.handleChange}
+						required
+					/>
+
+					<FormInput 
+						label='Password' 
+						name='password' 
+						type='password' 
+						value={this.state.password} 
+						onChange={this.handleChange} 
+						required
+					/>
 
 					<input type='submit' value='Submit Form' />
 
 				</form>
-
 			
 			</div>
 		)
