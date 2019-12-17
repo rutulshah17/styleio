@@ -5,6 +5,9 @@ import './sign-in.styles.scss';
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
 
+//signInWithGoogle is a object, so we have to de-structure it before using it
+import { signInWithGoogle } from '../../firebase/firebase.utils';
+
 class SignIn extends React.Component {
 	constructor(props) {
 		super(props);
@@ -58,11 +61,10 @@ class SignIn extends React.Component {
 						required
 					/>
 
-					<CustomButton type='submit' value='Submit Form'> Sign In </CustomButton>
-					<CustomButton type='submit' value='Submit Form'> Sign In with Google </CustomButton>
+					<CustomButton type='submit'> Sign In </CustomButton>
+					<CustomButton onClick={signInWithGoogle} > Sign In with Google </CustomButton>
 				
-				</form>
-			
+				</form>			
 			</div>
 		)
 	}
