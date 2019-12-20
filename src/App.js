@@ -8,7 +8,7 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop-page.component';
 
 //de-structing auth, since we do not the whole object
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 class App extends React.Component {
 	
@@ -26,8 +26,12 @@ class App extends React.Component {
 	componentDidMount() {
 		//assigning the function to the property so that we can empty it again in componentWillUnmount()
 		//onAuthStateChanged will continue to send the object, we would have to stop it from giving us
+		//here the "user" consist of entire auth object which can be used to make API calls.
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-			this.setState({ currentUser: user });
+			
+			this.setState( {currentUser: user} ); 
+			console.log(user);
+			createUserProfileDocument(user);
 		});
 	}
 
