@@ -26,12 +26,12 @@ class App extends React.Component {
 	componentDidMount() {
 		//assigning the function to the property so that we can empty it again in componentWillUnmount()
 		//onAuthStateChanged will continue to send the object, we would have to stop it from giving us
-		//here the "user" consist of entire auth object which can be used to make API calls.
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-			
-			this.setState( {currentUser: user} ); 
-			console.log(user);
-			createUserProfileDocument(user);
+		//here the "userAuth" consist of entire auth object which can be used to make API calls.
+		//we are making a potential API call, so making userAuth async
+		//get() and onSnapShot() are different although both have to be used on doc/collection reference
+		//sequence is like DocumentSnapShot -> DocumentReference(userRef) -> CollectionReference
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(userAuth => {
+			createUserProfileDocument(userAuth);
 		});
 	}
 

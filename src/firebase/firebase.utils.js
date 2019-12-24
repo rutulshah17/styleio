@@ -26,7 +26,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 	if(!userAuth) return;
 
 	//else go to users/user.uid in firestore to grab the value, 
-	//firestore will always return a object no matter what !!
+	//you always get actual data from snapshot(userRef.get()) of document/collection
 	//if it(snapshot) exist, grab it
 	//userRef is document reference -> set() get() update() delete()
 	const userRef = firestore.doc(`users/${userAuth.uid}`);
