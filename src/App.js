@@ -30,8 +30,25 @@ class App extends React.Component {
 		//we are making a potential API call, so making userAuth async
 		//get() and onSnapShot() are different although both have to be used on doc/collection reference
 		//sequence is like DocumentSnapShot -> DocumentReference(userRef) -> CollectionReference
-		this.unsubscribeFromAuth = auth.onAuthStateChanged(userAuth => {
-			createUserProfileDocument(userAuth);
+		this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+			
+			if(userAuth) {
+
+				const userRef = await createUserProfileDocument(userAuth);
+
+				userRef.onSnapshot( snapshot => 
+					this.setState({
+						currentUser: {
+							id: snapshot.id,
+							...snapshot.data()
+						}
+					})
+				)
+
+			} else {
+				this.setState({ currentUser: null })
+			}
+			
 		});
 	}
 
