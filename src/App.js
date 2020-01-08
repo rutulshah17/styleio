@@ -2,6 +2,8 @@ import React from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
@@ -10,15 +12,9 @@ import ShopPage from './pages/shop/shop-page.component';
 //de-structing auth, since we do not the whole object
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
-class App extends React.Component {
-	
-	constructor(props) {
-		super(props);
+import { setCurrentUser } from './redux/user/user.actions'
 
-		this.state = {
-			currentUser: null
-		}
-	}
+class App extends React.Component {
 
 	//setting the property to avoid memory leaks, so that we can call this property once user has signed out
 	unsubscribeFromAuth = null
@@ -37,16 +33,14 @@ class App extends React.Component {
 				const userRef = await createUserProfileDocument(userAuth);
 
 				userRef.onSnapshot( snapshot => 
-					this.setState({
-						currentUser: {
-							id: snapshot.id,
-							...snapshot.data()
-						}
+					this.props.setCurrentUser({
+						id: snapshot.id,
+						...snapshot.data()
 					}, () => { console.log(snapshot.data()) })
 				)
 
 			} else {
-				this.setState({ currentUser: null })
+				this.props.setCurrentUser({ currentUser: null })
 			}
 			
 		});
@@ -57,6 +51,11 @@ class App extends React.Component {
 		this.unsubscribeFromAuth();
 	}
 	
+
+	//passing state.currentuser into header so that Header component can access it
+	//as we want to see the value of currentUser
+	//removing the ' currentUser={this.state.currentUser} ' from header component
+	//As Header component is a HOC and it wil get its value from root-reducer
 	render() {
 		return (
 			<div>
@@ -71,4 +70,13 @@ class App extends React.Component {
 	}
 }
 
-export default App;
+//setCurrentUser(user) is just a function call which user-action will receive
+//setting payload to user
+const mapDispatchToProps = dispatch => ({
+	setCurrentUser: user => dispatch(setCurrentUser(user))
+})
+
+//here the first value is null coz we do not wwant anything from root-reducer here
+//i.e. we do want to define mapStateToProps here, since we are setting the value
+//so, we are going from component -> root-reducer hence, we will use mapDispatchToProps
+export default connect(null, mapDispatchToProps)(App);

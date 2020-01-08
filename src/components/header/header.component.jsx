@@ -33,6 +33,8 @@ const Header = ( {currentUser} ) => (
 //using root-reducer here, 
 //under state, we have user and then currentUser in userReducer which points to action.payload (value that we want) 
 //as a result, we have state.user.currentUser
+//mapStateToProps is used to get the state from its parent component
+//in this case, we get it from root-reducer
 const mapStateToProps = state => ({
 	currentUser: state.user.currentUser
 })
