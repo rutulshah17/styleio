@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
@@ -79,6 +79,12 @@ class App extends React.Component {
 	}
 }
 
+//since we always get the state back from mapStateToProps
+//this function is pointing to user-reducer
+const mapStateToProps = state => ({
+	currentUser: state.user.currentUser
+})
+
 //setCurrentUser(user) is just a function call which user-action will receive
 //setting payload to user
 //setCurrentUserProp is just a var which stores the value of 'user => dispatch(setCurrentUser(user))'
@@ -89,8 +95,6 @@ class App extends React.Component {
 //'setCurrentUserProp: (user)' means setCurrentUserProp which was defined above will pass its properties (snapshot.data())
 //to (user) which would pass along as argument to user-action which would set its state to 'SET_CURRENT_USER' 
 //and pass in the user argument to payload which would go into user-reducer to trigger the particular action 
-
-
 const mapDispatchToProps = dispatch => ({
 	setCurrentUserProp: (user) => dispatch(setCurrentUser(user))
 })
@@ -99,4 +103,4 @@ const mapDispatchToProps = dispatch => ({
 //here the first value is null coz we do not wwant anything from root-reducer here
 //i.e. we do want to define mapStateToProps here, since we are setting the value
 //so, we are going from component -> root-reducer hence, we will use mapDispatchToProps
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -34,7 +34,7 @@ const Header = ( {currentUser} ) => (
 //under state, we have user and then currentUser in userReducer which points to action.payload (value that we want) 
 //as a result, we have state.user.currentUser
 //mapStateToProps (which is STORE) is basically used to get the state from its parent component
-//in this case, we get it from root-reducer and will be triggered if value of reducer changes
+//in this case, we get it from user-reducer and will be triggered if value of reducer changes
 const mapStateToProps = state => ({
 	currentUser: state.user.currentUser
 })
