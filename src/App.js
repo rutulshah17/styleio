@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import ShopPage from './pages/shop/shop-page.component';
 //de-structing auth, since we do not the whole object
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
-import { setCurrentUserDemo } from './redux/user/user.actions'
+import { setCurrentUser } from './redux/user/user.actions'
 
 
 
@@ -26,6 +26,9 @@ class App extends React.Component {
 	unsubscribeFromAuth = null
 
 	componentDidMount() {
+
+		const { setCurrentUserProp } = this.props;
+
 		//assigning the function to the property so that we can empty it again in componentWillUnmount()
 		//onAuthStateChanged will continue to send the object, we would have to stop it from giving us
 		//here the "userAuth" consist of entire auth object which can be used to make API calls.
@@ -39,14 +42,14 @@ class App extends React.Component {
 				const userRef = await createUserProfileDocument(userAuth);
 
 				userRef.onSnapshot( snapshot => 
-					this.props.setCurrentUserProp({
+					setCurrentUserProp({
 						id: snapshot.id,
 						...snapshot.data()
 					}, () => { console.log(snapshot.data()) })
 				)
 
 			} else {
-				this.props.setCurrentUserProp({ currentUser: null }, () => {console.log(useRef)})
+				setCurrentUserProp(userAuth, () => {console.log(userAuth)})
 			}
 			
 		});
@@ -81,12 +84,15 @@ class App extends React.Component {
 //setCurrentUserProp is just a var which stores the value of 'user => dispatch(setCurrentUser(user))'
 //so that in future it can be referenced as setCurrentUserProp(user)
 //So here instead of this.setState() for setting the state, we are using setCurrentUserProp 
-// const mapDispatchToProps = dispatch => ({
-// 	setCurrentUserProp: (user) => dispatch(setCurrentUser(user))
-// })
+
+//since we are getting user data in snapshot object in setCurrentUserProp,
+//'setCurrentUserProp: (user)' means setCurrentUserProp which was defined above will pass its properties (snapshot.data())
+//to (user) which would pass along as argument to user-action which would set its state to 'SET_CURRENT_USER' 
+//and pass in the user argument to payload which would go into user-reducer to trigger the particular action 
+
 
 const mapDispatchToProps = dispatch => ({
-	setCurrentUserProp: (hello) => dispatch(setCurrentUserDemo(hello))
+	setCurrentUserProp: (user) => dispatch(setCurrentUser(user))
 })
 
 
