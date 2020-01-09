@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './App.css';
 import { Route, Switch } from 'react-router-dom';
 
@@ -12,9 +12,15 @@ import ShopPage from './pages/shop/shop-page.component';
 //de-structing auth, since we do not the whole object
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
-import { setCurrentUser } from './redux/user/user.actions'
+import { setCurrentUserDemo } from './redux/user/user.actions'
+
+
 
 class App extends React.Component {
+	
+	anotherObjectFromApp = {
+		demoText: 'Demo Text from Another Object',
+	}
 
 	//setting the property to avoid memory leaks, so that we can call this property once user has signed out
 	unsubscribeFromAuth = null
@@ -33,14 +39,14 @@ class App extends React.Component {
 				const userRef = await createUserProfileDocument(userAuth);
 
 				userRef.onSnapshot( snapshot => 
-					this.props.setCurrentUser({
+					this.props.setCurrentUserProp({
 						id: snapshot.id,
 						...snapshot.data()
 					}, () => { console.log(snapshot.data()) })
 				)
 
 			} else {
-				this.props.setCurrentUser({ currentUser: null })
+				this.props.setCurrentUserProp({ currentUser: null }, () => {console.log(useRef)})
 			}
 			
 		});
@@ -72,9 +78,17 @@ class App extends React.Component {
 
 //setCurrentUser(user) is just a function call which user-action will receive
 //setting payload to user
+//setCurrentUserProp is just a var which stores the value of 'user => dispatch(setCurrentUser(user))'
+//so that in future it can be referenced as setCurrentUserProp(user)
+//So here instead of this.setState() for setting the state, we are using setCurrentUserProp 
+// const mapDispatchToProps = dispatch => ({
+// 	setCurrentUserProp: (user) => dispatch(setCurrentUser(user))
+// })
+
 const mapDispatchToProps = dispatch => ({
-	setCurrentUser: user => dispatch(setCurrentUser(user))
+	setCurrentUserProp: (hello) => dispatch(setCurrentUserDemo(hello))
 })
+
 
 //here the first value is null coz we do not wwant anything from root-reducer here
 //i.e. we do want to define mapStateToProps here, since we are setting the value
