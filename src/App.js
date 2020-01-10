@@ -17,10 +17,6 @@ import { setCurrentUser } from './redux/user/user.actions'
 
 
 class App extends React.Component {
-	
-	anotherObjectFromApp = {
-		demoText: 'Demo Text from Another Object',
-	}
 
 	//setting the property to avoid memory leaks, so that we can call this property once user has signed out
 	unsubscribeFromAuth = null
@@ -72,7 +68,10 @@ class App extends React.Component {
 				<Switch>
 					<Route exact path="/" component={HomePage} />
 					<Route path="/shop" component={ShopPage} />
-					<Route path="/signin" component={SignInAndSignUpPage} />
+					<Route exact path="/signin"  
+						render={ () => this.props.currentUser 
+								? ( <Redirect to='/' />)  
+								: ( <SignInAndSignUpPage /> ) } />
 				</Switch>
 			</div>
 		);
