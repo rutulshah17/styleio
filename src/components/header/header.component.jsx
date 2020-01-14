@@ -12,7 +12,7 @@ import CartDropdown from '../cart-dropdown/cart-dropdown.component'
 
 import './header.styles.scss';
 
-const Header = ( {currentUser} ) => (
+const Header = ( {currentUser, hidden} ) => (
   
 	<div className="header">
 	
@@ -32,8 +32,10 @@ const Header = ( {currentUser} ) => (
 
 			<CartIcon />
 		</div>
-
-		<CartDropdown />
+		{
+			hidden ? null : <CartDropdown />
+			
+		}
 
 	</div>
 ); 
@@ -43,8 +45,9 @@ const Header = ( {currentUser} ) => (
 //as a result, we have state.user.currentUser
 //mapStateToProps (which is STORE) is basically used to get the state from its parent component
 //in this case, we get it from user-reducer and will be triggered if value of reducer changes
-const mapStateToProps = state => ({
-	currentUser: state.user.currentUser
+const mapStateToProps = ({user, cart}) => ({
+	currentUser: user.currentUser,
+	hidden: cart.hidden
 })
 
 export default connect(mapStateToProps)(Header);
