@@ -1,6 +1,6 @@
 //action consist of type and payload
 
-import { UserActionTypes }  from './user.types';
+import UserActionTypes  from './user.types';
 
 const INITIAL_STATE = {
 	currentUser: null
