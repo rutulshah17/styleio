@@ -8,8 +8,6 @@ import CustomButton from '../custom-button/custom-button.component';
 import './cart-dropdown.styles.scss';
 
 const CartDropdown = ({ cartItems }) => {
-    
-    console.log(cartItems)
 
     return(
     <div className='cart-dropdown'>
@@ -24,7 +22,7 @@ const CartDropdown = ({ cartItems }) => {
 )};
 
 const mapStateToProps = state => ({
-    cartItems: console.log(state.cart.cartItem)
+    cartItems: state.cart.cartItem
 });
 
 export default connect(mapStateToProps)(CartDropdown);
