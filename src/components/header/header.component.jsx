@@ -10,6 +10,9 @@ import { ReactComponent as Logo } from '../../assets/crown.svg';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropdown from '../cart-dropdown/cart-dropdown.component'
 
+import { selectCartHidden } from '../../redux/cart/cart.selectors';
+import { selectCurrentUser } from '../../redux/user/user.selector';
+
 import './header.styles.scss';
 
 const Header = ( {currentUser, hidden} ) => (
@@ -31,7 +34,7 @@ const Header = ( {currentUser, hidden} ) => (
 			}
 
 			<CartIcon />
-		</div>
+		</div>	
 		{
 			hidden ? null : <CartDropdown />
 			
@@ -40,14 +43,9 @@ const Header = ( {currentUser, hidden} ) => (
 	</div>
 ); 
 
-//using root-reducer here, 
-//under state, we have user and then currentUser in userReducer which points to action.payload (value that we want) 
-//as a result, we have state.user.currentUser
-//mapStateToProps (which is STORE) is basically used to get the state from its parent component
-//in this case, we get it from user-reducer and will be triggered if value of reducer changes
-const mapStateToProps = ({user, cart}) => ({
-	currentUser: user.currentUser,
-	hidden: cart.hidden
+const mapStateToProps = (state) => ({
+	currentUser: selectCurrentUser(state),
+	hidden: selectCartHidden(state)
 })
 
 export default connect(mapStateToProps)(Header);

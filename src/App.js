@@ -15,7 +15,6 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions'
 
 
-
 class App extends React.Component {
 
 	//setting the property to avoid memory leaks, so that we can call this property once user has signed out
@@ -23,7 +22,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 
-		const { setCurrentUserProp } = this.props;
+		const { setCurrentUser } = this.props;
 
 		//assigning the function to the property so that we can empty it again in componentWillUnmount()
 		//onAuthStateChanged will continue to send the object, we would have to stop it from giving us
@@ -38,14 +37,14 @@ class App extends React.Component {
 				const userRef = await createUserProfileDocument(userAuth);
 
 				userRef.onSnapshot( snapshot => 
-					setCurrentUserProp({
+					setCurrentUser({
 						id: snapshot.id,
 						...snapshot.data()
 					}, () => { console.log(snapshot.data()) })
 				)
 
 			} else {
-				setCurrentUserProp(userAuth, () => {console.log(userAuth)})
+				setCurrentUser(userAuth, () => {console.log(userAuth)})
 			}
 			
 		});
@@ -57,10 +56,6 @@ class App extends React.Component {
 	}
 	
 
-	//passing state.currentuser into header so that Header component can access it
-	//as we want to see the value of currentUser
-	//removing the ' currentUser={this.state.currentUser} ' from header component
-	//As Header component is a HOC and it wil get its value from root-reducer
 	render() {
 		return (
 			<div>
@@ -78,28 +73,14 @@ class App extends React.Component {
 	}
 }
 
-//since we always get the state back from mapStateToProps
-//this function is pointing to user-reducer
 const mapStateToProps = state => ({
 	currentUser: state.user.currentUser
 })
 
-//setCurrentUser(user) is just a function call which user-action will receive
-//setting payload to user
-//setCurrentUserProp is just a var which stores the value of 'user => dispatch(setCurrentUser(user))'
-//so that in future it can be referenced as setCurrentUserProp(user)
-//So here instead of this.setState() for setting the state, we are using setCurrentUserProp 
-
-//since we are getting user data in snapshot object in setCurrentUserProp,
-//'setCurrentUserProp: (user)' means setCurrentUserProp which was defined above will pass its properties (snapshot.data())
-//to (user) which would pass along as argument to user-action which would set its state to 'SET_CURRENT_USER' 
-//and pass in the user argument to payload which would go into user-reducer to trigger the particular action 
+ 
 const mapDispatchToProps = dispatch => ({
-	setCurrentUserProp: (user) => dispatch(setCurrentUser(user))
+	setCurrentUser: (user) => dispatch(setCurrentUser(user))
 })
 
 
-//here the first value is null coz we do not wwant anything from root-reducer here
-//i.e. we do want to define mapStateToProps here, since we are setting the value
-//so, we are going from component -> root-reducer hence, we will use mapDispatchToProps
 export default connect(mapStateToProps, mapDispatchToProps)(App);
