@@ -8,6 +8,8 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop-page.component';
+import CheckoutPage from './pages/checkout/checkoutpage.component';
+
 
 //de-structing auth, since we do not the whole object
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
@@ -66,6 +68,8 @@ class App extends React.Component {
 				<Switch>
 					<Route exact path="/" component={HomePage} />
 					<Route path="/shop" component={ShopPage} />
+					<Route exact path="/checkout" component={CheckoutPage} />
+					
 					<Route exact path="/signin"  
 						render={ () => this.props.currentUser 
 								? ( <Redirect to='/' />)  
