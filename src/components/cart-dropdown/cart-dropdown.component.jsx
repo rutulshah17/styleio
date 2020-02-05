@@ -6,11 +6,15 @@ import { withRouter } from 'react-router-dom';
 import CartItem from '../cart-item/cart-item.component';
 import CustomButton from '../custom-button/custom-button.component';
 
+import { toggleCartHidden } from '../../redux/cart/cart.actions';
 import { selectCartItems } from '../../redux/cart/cart.selectors';
+
 
 import './cart-dropdown.styles.scss';
 
-const CartDropdown = ({ cartItems, history }) => (
+//under onclick, we have another set of brackets after the callback function since we want to 
+//render 2 things for 1 click
+const CartDropdown = ({ cartItems, history, toggleCartHidden }) => (
 	<div className='cart-dropdown'>
 		<div className='cart-items'>
 			{ 
@@ -22,7 +26,13 @@ const CartDropdown = ({ cartItems, history }) => (
 				
 			}
 		</div>
-		<CustomButton onClick={ () => history.push('/checkout') }> Go TO CHECKOUT </CustomButton>
+		<CustomButton onClick={ () => 
+			{ 
+				history.push('/checkout') 
+				toggleCartHidden()
+			} 
+		} 
+		> Go TO CHECKOUT </CustomButton>
 	</div>
 );
 
@@ -30,4 +40,8 @@ const mapStateToProps = state => ({
 	cartItems: selectCartItems(state)
 });
 
-export default withRouter(connect(mapStateToProps)(CartDropdown));
+const mapDispatchToProps = dispatch => ({
+	toggleCartHidden: () => dispatch(toggleCartHidden()) 
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CartDropdown));
