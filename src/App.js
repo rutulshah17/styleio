@@ -8,7 +8,7 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop-page.component';
-import CheckoutPage from './pages/checkout/checkoutpage.component';
+import CheckoutPage from './pages/checkoutpage/checkoutpage.component';
 
 
 //de-structing auth, since we do not the whole object
