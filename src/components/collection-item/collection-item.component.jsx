@@ -9,7 +9,7 @@ import './collection-item.styles.scss';
 
 //getting item here coz we need it the entire item to pass into redux to add it to cart
 const CollectionItem = ({ item, addItem }) => {
-	
+
 	const { name, price, imageUrl } = item;
 
 	return (
