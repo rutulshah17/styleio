@@ -8,25 +8,26 @@ import { selectCollection } from '../../redux/shop/shop.selectors'
 
 import './collection.styles.scss';
 
-const CollectionPage = ( {mappingCollectionNamewithID} ) => {
+const CollectionPage = ( {collection} ) => {
 
-    const { title, items } = mappingCollectionNamewithID;
+    const { title, items } = collection;
 
     return (
         <div className='collection-page'>
             <h2 className='title'> {title} </h2>
             <div className='items'>
                 { items.map ( item => 
-                    <CollectionItem key={item.id} item={item} />
+                   ( <CollectionItem key={item.id} item={item} /> )
                 ) } 
             </div>
         </div>
     );
-}
+};
 
-//mapStateToProps also have access to its own props
+//mapStateToProps also have access to its own props,
+//here we are passing data to selectors to render collection based on owmProps
 const mapStateToProps = (state, ownProps) => ({
-    mappingCollectionNamewithID: selectCollection(ownProps.match.params.collectionId)(state)
+    collection: selectCollection(ownProps.match.params.collectionId)(state)
 });
 
 export default connect(mapStateToProps)(CollectionPage);
