@@ -14,3 +14,14 @@ export const selectCollection = collectionUrlParam => createSelector(
     [selectShopCollection],
     collections => collections[collectionUrlParam]
 );
+
+//Object.keys(collections) => [hats, sneakers, jackets, womens, mens]
+//Object.keys(collections).map(key => collections[key]) => 0: {id: 1, title: "Hats", routeName: "hats".....}
+//collections => {hats[...], sneakers[...], jackets[...], womens[...], mens[...]}
+//key => hats, sneakers,...
+//collections[key] => [array-inside-hats/sneakers....] (this array is mapped inside collectionPreview component)
+
+export const selectCollectionsForPreview = createSelector(
+    [selectShopCollection],
+    collections => Object.keys(collections).map(key => collections[key])
+);
