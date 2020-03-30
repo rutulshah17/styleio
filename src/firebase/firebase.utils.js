@@ -14,6 +14,8 @@ const config = {
 	measurementId: "G-SH4B7T4SV2"
 };
 
+firebase.initializeApp(config);
+
 //we have to pass the entire auth object which was grabbed in APP.JS under auth.onAuthStateChanged()
 //so that we can extract unique user id, email id, name etc from that object
 //since below function would be an API call, we have to make it Async function or use promise,
@@ -57,8 +59,21 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 };
 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+	const collectionRef = firestore.collection(collectionKey);
+	console.log(collectionRef);
 
-firebase.initializeApp(config);
+	const batch = firestore.batch();
+	objectsToAdd.forEach(obj => {
+		//setting unique id
+		const newDocRef = collectionRef.doc();
+		batch.set(newDocRef, obj)
+
+	});
+
+	return await batch.commit();
+
+}
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
