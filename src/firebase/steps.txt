@@ -1,0 +1,12 @@
+//get data from firestore
+
+see shop-page.component.jsx for reference:
+
+1. have an unsubscribe var defined
+2. since we only want to get the data once while app load 
+    or when any data is altered
+    -> write componentDidMount()
+    -> get the collection reference by where 'collections' is the name of the collection defined in firestore
+        const collectionRef = firestore.collection('collections')
+    -> now get data base on collectionRef
+        so collectionRef.onSnapshot()

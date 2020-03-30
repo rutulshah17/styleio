@@ -12,13 +12,11 @@ import CheckoutPage from './pages/checkoutpage/checkoutpage.component';
 
 
 //de-structing auth, since we do not the whole object
-import { auth, createUserProfileDocument, addCollectionAndDocuments } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument} from './firebase/firebase.utils';
 
 import { setCurrentUser } from './redux/user/user.actions'
 
 import { selectCurrentUser } from './redux/user/user.selector';
-
-import { selectCollectionsForPreview } from './redux/shop/shop.selectors'
 
 class App extends React.Component {
 
@@ -27,7 +25,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 
-		const { setCurrentUser, collectionsArray } = this.props;
+		const { setCurrentUser} = this.props;
 
 		//assigning the function to the property so that we can empty it again in componentWillUnmount()
 		//onAuthStateChanged will continue to send the object, we would have to stop it from giving us
@@ -51,8 +49,6 @@ class App extends React.Component {
 			} else {
 				setCurrentUser(userAuth, () => {console.log(userAuth)})
 			}
-
-			addCollectionAndDocuments('collections', collectionsArray.map( ({title, items}) => ({ title, items }) ));
 			
 		});
 	}
@@ -83,8 +79,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => ({
-	currentUser: selectCurrentUser(state),
-	collectionsArray: selectCollectionsForPreview(state)
+	currentUser: selectCurrentUser(state)
 })
 
  

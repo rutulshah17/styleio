@@ -59,6 +59,7 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
 
 };
 
+//func to make new collections and docs and push it to firestore
 export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
 	const collectionRef = firestore.collection(collectionKey);
 	console.log(collectionRef);
@@ -72,6 +73,22 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
 	});
 
 	return await batch.commit();
+
+}
+
+export const convertCollectionsSnapshotsToMap = (collections) => {
+	const transformedCollection = collections.docs.map( doc => {
+		const { title, items } = doc.data();
+
+		return {
+			routeName: encodeURI(title.toLowerCase()),
+			id: doc.id,
+			title,
+			items
+		}
+	});
+
+	console.log(transformedCollection);
 
 }
 
