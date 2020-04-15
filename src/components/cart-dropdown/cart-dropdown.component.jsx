@@ -7,15 +7,19 @@ import CartItem from '../cart-item/cart-item.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
-import { selectCartItems } from '../../redux/cart/cart.selectors';
 
+import { selectCartItems } from '../../redux/cart/cart.selectors';
+import { selectUserDisplayName } from '../../redux/user/user.selector'
 
 import './cart-dropdown.styles.scss';
 
 //under onclick, we have another set of brackets after the callback function since we want to 
 //render 2 things for 1 click
-const CartDropdown = ({ cartItems, history, toggleCartHidden }) => (
+const CartDropdown = ({ cartItems, history, toggleCartHidden, displayName }) => (
 	<div className='cart-dropdown'>
+
+		<h2> Hello {displayName} </h2>
+
 		<div className='cart-items'>
 			{ 
 				cartItems.length ?
@@ -37,7 +41,8 @@ const CartDropdown = ({ cartItems, history, toggleCartHidden }) => (
 );
 
 const mapStateToProps = state => ({
-	cartItems: selectCartItems(state)
+	cartItems: selectCartItems(state),
+	displayName: selectUserDisplayName(state)
 });
 
 const mapDispatchToProps = dispatch => ({
