@@ -88,8 +88,14 @@ export const convertCollectionsSnapshotsToMap = (collections) => {
 		}
 	});
 
-	console.log(transformedCollection);
-
+	//converting above array in to objects
+	//below function will get
+	// hats: { id: "XXXXX", items: {...}, routeName: "hats", title: "Hats" }
+	// jackets: { id: "XXXXX", items: {...}, routeName: "jackets", title: "Jackets" }....
+	return transformedCollection.reduce( (accumulator, collection) => {
+		accumulator[ collection.title.toLowerCase() ] = collection;
+		return accumulator
+	} ,  {} );
 }
 
 export const auth = firebase.auth();
