@@ -12,7 +12,10 @@ export const selectShopCollection = createSelector(
 //state.shop.collections.collectionId
 export const selectCollection = collectionUrlParam => createSelector(
     [selectShopCollection],
-    collections => collections[collectionUrlParam]
+    collections => 
+    collections 
+    ? collections[collectionUrlParam] 
+    : null
 );
 
 //state.shop.collections
@@ -25,5 +28,8 @@ export const selectCollection = collectionUrlParam => createSelector(
 //actual array is 0: {id: 1, title: "Hats", routeName: "hats",.....}....
 export const selectCollectionsForPreview = createSelector(
     [selectShopCollection],
-    collections => Object.keys(collections).map(key => collections[key])
+    collections => 
+    collections 
+    ? Object.keys(collections).map(key => collections[key]) 
+    : []
 );
