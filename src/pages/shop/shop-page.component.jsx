@@ -7,14 +7,23 @@ import { connect } from 'react-redux';
 import CollectionOverview from '../../components/collection-overview/collection-overview.component';
 import CollectionPage from '../collection/collection.component';
 
+import WithSpinner from '../../components/with-spinner/with-spinner.component';
+
 import { updateCollections } from '../../redux/shop/shop.actions'
 
 import { firestore, convertCollectionsSnapshotsToMap } from '../../firebase/firebase.utils'
 
+const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
+const CollectionPageWithSpinner = WithSpinner(CollectionPage);
+
 //since this component is rendered through ROUTE which is in app.js,
 //it has access to match, history and loaction props
 class ShopPage extends React.Component  {
-	
+
+	state = {
+		loading: true
+	}
+
 	unsubsscribeFromSnapshot = null;
 
 	componentDidMount() {
@@ -26,6 +35,7 @@ class ShopPage extends React.Component  {
 		collectionRef.onSnapshot( async snapShot => {
 			const collectionsMap = convertCollectionsSnapshotsToMap(snapShot);
 			updateCollections(collectionsMap);
+			this.setState({ loading: false });
 		});
 
 	}
@@ -33,11 +43,23 @@ class ShopPage extends React.Component  {
 	render() {
 	
 		const { match } = this.props;
+		const { loading } = this.state;
 
 		return (
 			<div className="shop-page">
-				<Route exact path={`${match.path}`}  component={CollectionOverview} />
-				<Route path={`${match.path}/:collectionId`} component={CollectionPage} />
+				<Route exact path={`${match.path}`}  
+					render={ (props) => <CollectionOverviewWithSpinner 
+						isLoading={loading} 
+						{...props} /> 
+					} 
+				/>
+				
+				<Route path={`${match.path}/:collectionId`} 
+					render={ (props) => <CollectionPageWithSpinner 
+						isLoading={loading} 
+						{...props} /> 
+					} 
+				/>
 			</div> 
 		);
 	}	
