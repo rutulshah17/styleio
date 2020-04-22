@@ -3,6 +3,12 @@ import { createSelector } from 'reselect';
 //state.shop
 const selectShop = state => state.shop;
 
+//state.shop.isFetching
+export const selectIsCollectionFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
+);
+
 //state.shop.collections
 export const selectShopCollection = createSelector(
     [selectShop],

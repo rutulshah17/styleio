@@ -6,11 +6,7 @@ import '../../pages/shop/shop-page.component';
 import CollectionItem from '../collection-item/collection-item.component';
 import './collection-preview.styles.scss';
 
-const CollectionPreview = ( {title, items, ...otherProps} ) => {
-	
-	console.log(otherProps);
-
-	return (
+const CollectionPreview = ( {title, items} ) => (
 	<div className="collection-preview">
 		<h1 className="title"> { title.toUpperCase() } 
 		
@@ -27,6 +23,6 @@ const CollectionPreview = ( {title, items, ...otherProps} ) => {
 			}
 		</div>
 	</div>
-)};
+);
 
 export default CollectionPreview;
