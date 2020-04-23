@@ -10,7 +10,7 @@ import CollectionPage from '../collection/collection.component';
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
 
 import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
-import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import { selectIsCollectionFetching, selectIsCollectionLoaded } from '../../redux/shop/shop.selectors';
 
 const CollectionOverviewWithSpinner = WithSpinner(CollectionOverview);
 const CollectionPageWithSpinner = WithSpinner(CollectionPage);
@@ -26,7 +26,7 @@ class ShopPage extends React.Component  {
 	
 	render() {
 	
-		const { match, isCollectionFetching } = this.props;
+		const { match, isCollectionFetching, isCollectionLoaded } = this.props;
 
 		return (
 			<div className="shop-page">
@@ -37,9 +37,14 @@ class ShopPage extends React.Component  {
 					} 
 				/>
 				
+				{/* 
+					if isCollectionLoaded is false means no shop.collections value is null, 
+					so we want the loader to run for which loading value must be true
+					hence isLoading{!!isCollectionLoaded}
+				*/}
 				<Route path={`${match.path}/:collectionId`} 
 					render={ (props) => <CollectionPageWithSpinner 
-						isLoading={isCollectionFetching} 
+						isLoading={!isCollectionLoaded}
 						{...props} /> 
 					} 
 				/>
@@ -49,7 +54,8 @@ class ShopPage extends React.Component  {
 } 
 
 const mapStateToProps = state => ({
-	isCollectionFetching: selectIsCollectionFetching(state)
+	isCollectionFetching: selectIsCollectionFetching(state),
+	isCollectionLoaded: selectIsCollectionLoaded(state)
 });
 
 const mapDispatchToProps = dispatch => ({

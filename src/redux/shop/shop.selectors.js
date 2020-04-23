@@ -10,6 +10,16 @@ export const selectIsCollectionFetching = createSelector(
 );
 
 //state.shop.collections
+
+//checking if shop.collections is true or false
+// empty object with '!!' will return true
+// i.e. !!{} is true 
+export const selectIsCollectionLoaded = createSelector (
+    [selectShop],
+    shop => !!shop.collections
+);
+
+//state.shop.collections
 export const selectShopCollection = createSelector(
     [selectShop],
     shop => shop.collections
